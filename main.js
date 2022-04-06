@@ -3,8 +3,8 @@ let ctx = canvas.getContext("2d");
 let levels = [300, 500, 700, 900, 1100]
 let size = 20
 
-let width = Math.floor(window.innerWidth / size) % 2 !== 0 ? Math.floor(window.innerWidth / size) * size : Math.floor(window.innerWidth / size - 1) * size
-let height = Math.floor(window.innerHeight / size) % 2 !== 0 ? Math.floor(window.innerHeight / size) * size : Math.floor(window.innerHeight / size - 1) * size
+let width = Math.floor(document.documentElement.clientWidth / size) % 2 !== 0 ? Math.floor(document.documentElement.clientWidth / size) * size : Math.floor(document.documentElement.clientWidth / size - 1) * size
+let height = Math.floor(document.documentElement.clientHeight / size) % 2 !== 0 ? Math.floor(document.documentElement.clientHeight / size) * size : Math.floor(document.documentElement.clientHeight / size - 1) * size
 
 //width = height = 900
 
