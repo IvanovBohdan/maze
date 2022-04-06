@@ -2,7 +2,7 @@ let canvas = document.getElementById("canvas");
 let ctx = canvas.getContext("2d");
 let levels = [300, 500, 700, 900, 1100]
 let size = 20
-
+let light = confirm('Disable the lights?')
 let width = Math.floor(document.documentElement.clientWidth / size) % 2 !== 0 ? Math.floor(document.documentElement.clientWidth / size) * size : Math.floor(document.documentElement.clientWidth / size - 1) * size
 let height = Math.floor(document.documentElement.clientHeight / size) % 2 !== 0 ? Math.floor(document.documentElement.clientHeight / size) * size : Math.floor(document.documentElement.clientHeight / size - 1) * size
 
@@ -125,18 +125,25 @@ class Maze{
 let maze = new Maze(rows, columns);
 maze.calculate(maze.cells[0][0])
 maze.drawField()
+maze.drawCells('lime', maze.path[0], maze.path[maze.path.length-1])
 
 let currentCell = maze.field[1][1]
-
-function move(currentCell){
-    ctx.clearRect(0, 0, width, height)
-    maze.drawField()
+drawCircle(currentCell)
+function drawCircle(currentCell){
+    if(!light)return
     ctx.beginPath()
     ctx.fillStyle = "black"
     ctx.arc(currentCell.cords.x * size + size/2, currentCell.cords.y * size + size/2, width > height ? width : height, 0, 2 * Math.PI)
     ctx.lineWidth = (width > height ? width : height) * 1.5
     ctx.stroke()
+}
+
+function move(currentCell){
+    ctx.clearRect(0, 0, width, height)
+    maze.drawField()
+    drawCircle(currentCell)
     maze.drawCells('red', currentCell)
+    maze.drawCells('lime', maze.path[0], maze.path[maze.path.length-1])
     if(currentCell.cords.x == maze.columns - 2 && currentCell.cords.y == maze.rows - 2){
         // level++
         // width = height = levels[level]
@@ -146,6 +153,7 @@ function move(currentCell){
         // maze.drawField()
         // currentCell = maze.field[1][1]
         alert("You win!")
+        document.location.reload()
     }
 }
 
