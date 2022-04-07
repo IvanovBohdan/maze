@@ -1,7 +1,7 @@
 let canvas = document.getElementById("canvas");
 let ctx = canvas.getContext("2d");
 let levels = [300, 500, 700, 900, 1100]
-let size = 20
+let size = Math.floor(document.documentElement.clientWidth * document.documentElement.clientHeight / 100000)
 let light = confirm('Turn off the lights?')
 let width = Math.floor(document.documentElement.clientWidth / size) % 2 !== 0 ? Math.floor(document.documentElement.clientWidth / size) * size : Math.floor(document.documentElement.clientWidth / size - 1) * size
 let height = Math.floor(document.documentElement.clientHeight / size) % 2 !== 0 ? Math.floor(document.documentElement.clientHeight / size) * size : Math.floor(document.documentElement.clientHeight / size - 1) * size
@@ -105,7 +105,7 @@ class Maze{
         for(let i = 0; i < rows; i++){
             for(let j = 0; j < columns; j++){
                 if(this.field[i][j].wall && this.field[i][j].visible){
-                    ctx.fillStyle = "#000000";
+                    ctx.fillStyle = '#000';
                     ctx.fillRect(j * size, i * size, size, size);
                 }
             }
@@ -113,10 +113,15 @@ class Maze{
     }
 
     drawCells(color, ...cells){
+
         for(let i = 0; i < cells.length; i++){
             let cell = cells[i];
-            ctx.fillStyle = color;
-            ctx.fillRect(cell.cords.x * size, cell.cords.y * size, size, size);
+            if(typeof color == 'string'){
+                ctx.fillStyle = color;
+                ctx.fillRect(cell.cords.x * size, cell.cords.y * size, size, size)
+            }else{
+                ctx.drawImage(color, cell.cords.x * size, cell.cords.y * size, size, size)
+            }
         }
     }
 
@@ -124,10 +129,24 @@ class Maze{
 
 let maze = new Maze(rows, columns);
 maze.calculate(maze.cells[0][0])
+for(let i = 0; i < 200; i++){
+    let wall = getRandomWall()
+    console.log(wall)
+    wall.visible = false
+}
 maze.drawField()
 maze.drawCells('lime', maze.path[0], maze.path[maze.path.length-1])
 
+function getRandomWall(){
+    let wall = maze.field[randomInt(1, maze.rows-2)][randomInt(1, maze.columns-2)]
+    while(!wall.wall){
+        wall = maze.field[randomInt(1, maze.rows-2)][randomInt(1, maze.columns-2)]
+    }
+    return wall
+}
+
 let currentCell = maze.field[1][1]
+
 drawCircle(currentCell)
 function drawCircle(currentCell){
     if(!light)return
@@ -142,7 +161,7 @@ function move(currentCell){
     ctx.clearRect(0, 0, width, height)
     maze.drawField()
     drawCircle(currentCell)
-    maze.drawCells('red', currentCell)
+    maze.drawCells(man, currentCell)
     maze.drawCells('lime', maze.path[0], maze.path[maze.path.length-1])
     if(currentCell.cords.x == maze.columns - 2 && currentCell.cords.y == maze.rows - 2){
         // level++
@@ -159,7 +178,7 @@ function move(currentCell){
 
 document.addEventListener("keydown", e => {
     maze.drawCells("lime", currentCell)
-
+    ctx.drawImage(man, 50, 50)
     if(e.code == "ArrowLeft" || e.code == 'KeyA'){
         currentCell = !maze.field?.[currentCell.cords.y]?.[currentCell.cords.x - 1]?.visible ? maze.field[currentCell.cords.y][currentCell.cords.x - 1] : currentCell
     }
@@ -193,6 +212,25 @@ container.addEventListener('swipe', function (e) {
 
     move(currentCell)
 });
+
+let codes = ['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown']
+  
+let man = new Image()
+man.src = 'man.png'
+
+
+
+// setInterval( () => {
+//     let event = new KeyboardEvent('keydown', {
+//         bubbles: true,
+//         cancelable: true,
+//         key: codes[Math.floor(Math.random() * codes.length)],
+//         code: codes[Math.floor(Math.random() * codes.length)]
+//     })
+
+//     document.dispatchEvent(event)
+
+// }, 10)
 
 
 //maze.drawCells('red',...maze.path)
