@@ -1,7 +1,7 @@
 let canvas = document.getElementById("canvas");
 let ctx = canvas.getContext("2d");
 let levels = [300, 500, 700, 900, 1100]
-let size = Math.floor(document.documentElement.clientWidth * document.documentElement.clientHeight / 100000)
+let size = 40 //Math.floor(document.documentElement.clientWidth * document.documentElement.clientHeight / 100000)
 let light = confirm('Turn off the lights?')
 let width = Math.floor(document.documentElement.clientWidth / size) % 2 !== 0 ? Math.floor(document.documentElement.clientWidth / size) * size : Math.floor(document.documentElement.clientWidth / size - 1) * size
 let height = Math.floor(document.documentElement.clientHeight / size) % 2 !== 0 ? Math.floor(document.documentElement.clientHeight / size) * size : Math.floor(document.documentElement.clientHeight / size - 1) * size
