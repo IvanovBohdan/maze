@@ -1,7 +1,7 @@
 let canvas = document.getElementById("canvas");
 let ctx = canvas.getContext("2d");
 let levels = [300, 500, 700, 900, 1100]
-let size = 40 //Math.floor(document.documentElement.clientWidth * document.documentElement.clientHeight / 100000)
+let size = 30 //Math.floor(document.documentElement.clientWidth * document.documentElement.clientHeight / 100000)
 let light = confirm('Turn off the lights?')
 let width = Math.floor(document.documentElement.clientWidth / size) % 2 !== 0 ? Math.floor(document.documentElement.clientWidth / size) * size : Math.floor(document.documentElement.clientWidth / size - 1) * size
 let height = Math.floor(document.documentElement.clientHeight / size) % 2 !== 0 ? Math.floor(document.documentElement.clientHeight / size) * size : Math.floor(document.documentElement.clientHeight / size - 1) * size
@@ -129,11 +129,11 @@ class Maze{
 
 let maze = new Maze(rows, columns);
 maze.calculate(maze.cells[0][0])
-for(let i = 0; i < 200; i++){
-    let wall = getRandomWall()
-    console.log(wall)
-    wall.visible = false
-}
+//for(let i = 0; i < 200; i++){
+   // let wall = getRandomWall()
+   // console.log(wall)
+   // wall.visible = false
+//}
 maze.drawField()
 maze.drawCells('lime', maze.path[0], maze.path[maze.path.length-1])
 
